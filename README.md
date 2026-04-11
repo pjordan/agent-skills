@@ -1,6 +1,11 @@
 # agent-skills
 
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blueviolet?logo=anthropic)](https://code.claude.com/docs/en/skills)
+[![Version](https://img.shields.io/badge/version-1.0.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/issues)
+[![Inspired by llm-wiki](https://img.shields.io/badge/inspired_by-llm--wiki-orange)](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
 
 A collection of skills for coding agents during long-running autonomous development sessions. Installable as a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin.
 
