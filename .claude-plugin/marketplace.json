@@ -1,10 +1,22 @@
 {
+  "name": "pjordan-agent-skills",
+  "owner": {
+    "name": "Patrick R. Jordan"
+  },
+  "metadata": {
+    "description": "Skills for coding agents during long-running autonomous development sessions"
+  },
   "plugins": [
     {
       "name": "agent-skills",
-      "version": "1.0.0",
+      "source": ".",
       "description": "Skills for coding agents: agent-wiki (persistent knowledge base for dev sessions), and more.",
-      "path": "."
+      "version": "1.0.0",
+      "author": {
+        "name": "Patrick R. Jordan"
+      },
+      "license": "MIT",
+      "keywords": ["skills", "agents", "wiki", "knowledge-base"]
     }
   ]
 }
