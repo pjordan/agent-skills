@@ -11,18 +11,30 @@ A collection of skills for coding agents during long-running autonomous developm
 
 ## Installation
 
-Add the marketplace and install:
+In Claude Code, add the marketplace and install the plugin:
 
 ```
 /plugin marketplace add pjordan/agent-skills
-/plugin install agent-skills
+/plugin install agent-skills@pjordan-agent-skills
 ```
 
-Or install directly:
+Then reload to activate:
 
 ```
-/plugin install pjordan/agent-skills
+/reload-plugins
 ```
+
+## Usage
+
+Once installed, skills are available automatically. Claude will invoke them when relevant based
+on your prompt. You can also trigger a skill explicitly:
+
+```
+/agent-skills:agent-wiki init the wiki for this project
+```
+
+Or just ask naturally — "initialize the wiki", "ingest this finding", "lint the wiki" — and
+Claude will use the skill when the context matches.
 
 ## Skills
 
