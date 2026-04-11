@@ -37,26 +37,29 @@ Or just ask naturally: "initialize the wiki", "ingest this finding", "lint the w
 
 | Skill | Description |
 |-------|-------------|
-| [agent-wiki](skills/agent-wiki/) | Persistent, compounding knowledge base. Maintains a `.wiki/` directory of cross-referenced markdown pages across sessions. |
+| [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent, compounding knowledge base. Maintains a `.wiki/` directory of cross-referenced markdown pages across sessions. |
 
 ## Repo Structure
 
 ```
-agent-skills/
+agent-skills/                            # Marketplace root
 ├── .claude-plugin/
-│   ├── plugin.json              # Plugin manifest
-│   └── marketplace.json         # Marketplace index
-├── skills/
-│   └── agent-wiki/
-│       ├── README.md            # Human-facing overview
-│       ├── SKILL.md             # Agent-facing instructions
-│       └── references/          # Supporting docs (loaded on-demand)
+│   └── marketplace.json                 # Marketplace definition
+├── plugins/
+│   └── agent-skills/                    # Plugin
+│       ├── .claude-plugin/
+│       │   └── plugin.json              # Plugin manifest
+│       └── skills/
+│           └── agent-wiki/
+│               ├── README.md            # Human-facing overview
+│               ├── SKILL.md             # Agent-facing instructions
+│               └── references/          # Supporting docs (loaded on-demand)
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-Each skill lives in its own directory under `skills/` with a `SKILL.md` (agent instructions) and `README.md` (human overview).
+The repo is a marketplace containing one plugin. Each skill lives under `plugins/agent-skills/skills/` with a `SKILL.md` (agent instructions) and `README.md` (human overview).
 
 ## Contributing
 

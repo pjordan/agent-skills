@@ -4,9 +4,10 @@ Thanks for your interest in contributing to agent-skills. This project is a coll
 
 ## Adding a New Skill
 
-1. Create a directory under `skills/` with your skill name (kebab-case):
+1. Create a directory under `plugins/agent-skills/skills/` with your skill name (kebab-case):
    ```
-   skills/my-skill/
+   plugins/agent-skills/skills/my-skill/
+   ├── README.md
    └── SKILL.md
    ```
 

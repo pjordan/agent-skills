@@ -1,22 +1,23 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "pjordan-agent-skills",
+  "version": "1.0.0",
+  "description": "Skills for coding agents during long-running autonomous development sessions",
   "owner": {
     "name": "Patrick R. Jordan"
-  },
-  "metadata": {
-    "description": "Skills for coding agents during long-running autonomous development sessions"
   },
   "plugins": [
     {
       "name": "agent-skills",
-      "source": ".",
-      "description": "Skills for coding agents: agent-wiki (persistent knowledge base for dev sessions), and more.",
+      "description": "Persistent knowledge base and other skills for coding agents in long-running dev sessions",
+      "source": "./plugins/agent-skills",
       "version": "1.0.0",
       "author": {
         "name": "Patrick R. Jordan"
       },
       "license": "MIT",
-      "keywords": ["skills", "agents", "wiki", "knowledge-base"]
+      "keywords": ["skills", "agents", "wiki", "knowledge-base"],
+      "category": "development"
     }
   ]
 }
