@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "version": "0.1.0",
+      "description": "Skills for coding agents: agent-wiki (persistent knowledge base for dev sessions), and more.",
+      "path": "."
+    }
+  ]
+}
