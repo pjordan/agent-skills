@@ -38,20 +38,9 @@ Claude will use the skill when the context matches.
 
 ## Skills
 
-### [agent-wiki](skills/agent-wiki/SKILL.md)
+### [agent-wiki](skills/agent-wiki/)
 
-A persistent, compounding knowledge base that coding agents maintain as plain markdown files. Adapted from [Andrej Karpathy's llm-wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) for autonomous agent workflows.
-
-The wiki lives in a `.wiki/` directory in your project and supports four operations:
-
-| Operation | What it does |
-|-----------|-------------|
-| **init** | Bootstrap the wiki for a new repo — scans the codebase and creates foundational pages |
-| **ingest** | File a discovery into the wiki — bug root causes, architecture insights, dependency quirks |
-| **query** | Consult the wiki for context before making decisions |
-| **lint** | Health check — find contradictions, stale pages, orphans, and gaps |
-
-The core insight: agents are good at the bookkeeping that makes knowledge bases useful (cross-referencing, indexing, consistency checks). The wiki compounds across sessions so agents stop rediscovering the same things.
+Persistent, compounding knowledge base for coding agents. Maintains a `.wiki/` directory of cross-referenced markdown pages that grows richer across sessions — architecture insights, bug investigations, decision records, dependency gotchas, and more. Based on [Karpathy's llm-wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 
 ## Repo Structure
 
