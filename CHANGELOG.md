@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-04-18
+
+### Changed
+- **contribute**: `plan` now extracts acceptance criteria from the issue (grounded in
+  issue quotes) and persists them as a checklist in the plan file. Plan and criteria
+  are confirmed together in a single gate; criteria are frozen at plan time, and
+  mid-flight scope pivots require returning to `plan`. See
+  `plugins/agent-skills/skills/contribute/SKILL.md` § plan for the header/format spec.
+- **reflect**: `retro` pages gain a new `## Acceptance criteria — outcome` section
+  that grades each criterion with a parseable evidence citation. Retros remain
+  write-once — late evidence goes in a new retro that cross-links the old one. See
+  `plugins/agent-skills/skills/reflect/SKILL.md` § retro body structure for the
+  grading grammar.
+
 ## [1.3.0] - 2026-04-18
 
 ### Added

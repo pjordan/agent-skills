@@ -111,17 +111,36 @@ work they want to do. User frames the area; you filter candidates using the wiki
 
 Run after `pick` (or when the user points at a specific issue) and before any edit.
 
-1. Read the issue/task fully. Read the wiki pages it touches (architecture pages from agent-wiki;
-   `workflow` and `review-policy` from observe's pages) and any relevant source files.
+1. Read the issue/task fully. Fetch the issue body once (`gh issue view <n>` or
+   `az boards work-item show --id <n>`) and reuse it across the rest of `plan`. Read the wiki
+   pages it touches (architecture pages from agent-wiki; `workflow` and `review-policy` from
+   observe's pages) and any relevant source files.
 
 2. Produce a written plan covering: goal, files to change, tests to add/update, expected PR size
    (verify it fits under 300 lines / 8 files — if not, propose a split now), required CI checks
    to anticipate, and any conventions from `CLAUDE.md` / CONTRIBUTING that apply.
 
-3. Show the plan to the user and wait for confirmation before moving to `draft`. Plans are cheap
-   to revise; half-done drafts are not.
+3. Extract acceptance criteria from the issue. Using the issue body already fetched in step 1,
+   propose a checkable list — each criterion short,
+   verifiable, and unambiguous (e.g. `crash in src/auth/middleware.js no longer reproduces on
+   invalid tokens`, `regression test added for cold-start path`, `README section on JWT_SECRET
+   updated`). Aim for 3-6 items per task; criteria that can't be observed from git, CI, or a
+   test output (only via user report or external system) should be few. Prefer under-claiming
+   to over-claiming: fewer, sharper criteria beat a padded list that will grade mostly
+   "Unverifiable" later.
 
-4. **On confirmation,** persist the plan to `<wiki-root>/plans/<filename>.md` (see
+   **Ground each criterion in the issue.** Under the proposed list, include the short issue
+   span each criterion came from (e.g. `> "the crash only happens on expired tokens"`). If you
+   can't find a quote supporting a criterion, drop the criterion — don't fabricate. If the issue
+   has no explicit criteria at all, still infer from prose but mark the list as inferred (see
+   step 5 on how the section header encodes that).
+
+4. Show the plan *and* the acceptance criteria to the user in a single combined gate. Wait for
+   confirmation. The user can edit either — any edit to either restarts this same gate (plan
+   and criteria are confirmed together, not independently). Do not proceed on partial approval.
+   Plans are cheap to revise; half-done drafts are not.
+
+5. **On confirmation,** persist the plan to `<wiki-root>/plans/<filename>.md` (see
    [agent-wiki § Storage location](../agent-wiki/SKILL.md#storage-location) for `<wiki-root>`;
    create the `plans/` directory if missing). If the user rejects the plan, do not persist —
    revise and re-confirm first. The plan is wiki content, not repo content — it lives in the
@@ -132,14 +151,27 @@ Run after `pick` (or when the user points at a specific issue) and before any ed
 
    Frontmatter: `title`, `issue` (nullable), `created`, optional `tags`. Body: the same plan
    shown to the user (goal, files to change, tests, expected size, required CI checks,
-   conventions). Downstream skills — notably [reflect](../reflect/SKILL.md) — read this file
-   to compare plan against actual.
+   conventions), plus an acceptance-criteria section using markdown checklist format
+   (`- [ ] <criterion>` per line). Section heading encodes provenance so downstream skills
+   can weight the grading:
+   - If criteria were explicit in the issue: `## Acceptance criteria`
+   - If the issue had no explicit criteria and you inferred from prose: `## Acceptance criteria (inferred)`
+   - If the user edited the proposed list at the confirmation gate: `## Acceptance criteria (user-edited)`
+
+   Downstream skills — notably [reflect](../reflect/SKILL.md) — read this file to compare plan
+   against actual.
 
 ---
 
 ### draft — Implement the plan on a local branch
 
 Run after the user approves a plan.
+
+**Acceptance criteria are frozen at plan time.** The plan file's `## Acceptance criteria`
+section is what reflect grades against at retro time — do not silently revise it during draft.
+If the work genuinely no longer maps to the criteria (scope pivot, issue reinterpretation), stop
+and return to `plan` to revise the plan and criteria together under a fresh confirmation gate.
+Honest Unmet grades beat moving-goalpost criteria.
 
 1. Create a local branch from the correct base (default branch unless the plan says otherwise).
    Naming: follow any convention the wiki records; otherwise a short slug prefixed with the user's

@@ -81,6 +81,22 @@ related: [contributor-alice, workflow-ci, playbook-flaky-e2e]
 
 **`retro` body structure:**
 - `## Context` — the task, PR number, issue number, scope of the retro.
+- `## Acceptance criteria — outcome` — one checklist item per criterion from the plan file's
+  acceptance-criteria section (any header variant contribute emits — see
+  [contribute § plan step 5](../contribute/SKILL.md#plan--outline-the-approach-before-coding)).
+  Grade each: `- [x] <criterion>` for Met, `- [ ] <criterion>` for Unmet, `- [?] <criterion>`
+  for Unverifiable. Every grade ends with a parseable evidence citation of shape
+  `<prefix>:<payload>`, with `prefix` drawn from a closed set:
+  - `sha:<short-sha>` — commit or merge-commit evidence
+  - `pr:<forge-url>` — PR-level evidence (review thread, CI check URL)
+  - `test:<test-id-or-path>` — test output: name, file, or CI test ID
+  - `reason:<why>` — only for `[?]` Unverifiable (e.g. `reason:requires user report`)
+
+  If **more than half** of the criteria grade Unverifiable, add a short note at the top of this
+  section calling that out — a mostly-`[?]` outcome usually means the criteria were too
+  aspirational or the work drifted from them. If the plan file has no acceptance-criteria
+  section at all (e.g. plans predating this convention), skip this section with a one-line
+  note: `_No plan-level criteria to grade._`
 - `## Plan vs actual` — planned N lines / X files vs. actual M lines / Y files; iterate rounds;
   CI outcomes (pass/fail/flake). Quote the plan file's expected size verbatim.
 - `## What went well` — concrete wins with SHA/PR links.
@@ -123,7 +139,9 @@ these signals fire — at most once per scope per session (see the debounce rail
 2. Locate the plan file. Glob `<wiki-root>/plans/*` for the issue number or slug matching the
    scope. **If absent**, note so in the retro's `## Context` and degrade gracefully: the retro
    still runs, but `## Plan vs actual` cites git+forge only and flags the missing plan as a
-   process gap.
+   process gap. If the plan file is found, also locate its `## Acceptance criteria` section for
+   grading. If that section is absent, proceed — grading is skipped rather than blocking the
+   retro.
 
 3. Read git + forge + wiki — narrow queries only. Fetch each PR's forge lifecycle **at most
    once per session**; if you've already pulled `#N`'s reviews/CI in this session, reuse the
@@ -225,7 +243,9 @@ an explicit nod.
 
 **Retros are write-once forensic records.** Once written, a retro captures what was known at
 that moment; do not retroactively edit it when later events contradict it (a revert, a follow-up
-bug). Write a new retro that cross-links the old one instead.
+bug, a late user report that turns a `[?]` into a `[x]`, new CI evidence). Write a new retro
+that cross-links the old one instead. This rule applies to every section of the retro,
+including `## Acceptance criteria — outcome`.
 
 **At most one retro suggestion per scope per session.** If the user already declined (or ran)
 a retro for PR `#N` this session, don't re-surface the suggestion. Forge queries for lifecycle

@@ -1,12 +1,44 @@
 # agent-skills
 
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blueviolet?logo=anthropic)](https://code.claude.com/docs/en/skills)
-[![Version](https://img.shields.io/badge/version-1.3.0-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.4.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/issues)
 
-A collection of skills for coding agents during long-running autonomous development sessions. Installable as a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin.
+Four skills that give coding agents a memory and a feedback loop across long-running development sessions — observe the repo, contribute work, reflect on what shipped, and compound the lessons in a per-project wiki. Installable as a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin.
+
+## Why
+
+Agents working autonomously over days rediscover the same things every session: who owns which paths, which CI checks gate which branches, that the "quick fix" from last Tuesday became a 900-line refactor. Each rediscovery costs real time and, worse, produces drive-by PRs and tagged maintainers nobody asked for.
+
+agent-skills is one feedback loop, not four utilities. **observe** surveys the repo, team, and workflow into a per-project wiki. **contribute** reads that wiki before acting — picking work, planning, drafting PRs the user opens themselves — with hard safety rails on scope and social actions. **reflect** closes the loop after a PR ships: what drifted from plan, which observe priors look wrong, which patterns recur. The drift feeds back into observe's next refresh, so priors compound instead of decay. **agent-wiki** is the substrate the other three share.
+
+## How the skills compound
+
+The four skills never call each other. They coordinate on disk through `agent-wiki`, which means every handoff survives across sessions.
+
+```mermaid
+flowchart LR
+    subgraph wiki["agent-wiki (persistent, per-project)"]
+        P1[contributor / workflow /<br/>review-policy / team-dynamics]
+        P2[plans/]
+        P3[retro / playbook]
+    end
+
+    observe -- writes --> P1
+    P1 --> contribute
+    contribute -- writes --> P2
+    P2 --> reflect
+    P1 --> reflect
+    reflect -- writes --> P3
+    P3 -. calibration findings .-> observe
+
+    classDef skill fill:#eef,stroke:#446,stroke-width:1px;
+    class observe,contribute,reflect skill;
+```
+
+Arrows follow data flow: labeled `writes` where a skill authors pages, unlabeled where a skill consumes them. The dashed arrow closes the loop — `reflect`'s `## Calibration findings` sections feed into `observe refresh` when it recomputes baselines.
 
 ## Installation
 
