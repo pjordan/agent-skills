@@ -1,7 +1,7 @@
 # agent-skills
 
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blueviolet?logo=anthropic)](https://code.claude.com/docs/en/skills)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/issues)
@@ -38,6 +38,8 @@ Or just ask naturally: "initialize the wiki", "ingest this finding", "lint the w
 | Skill | Description |
 |-------|-------------|
 | [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent, compounding knowledge base. Maintains a per-project wiki of cross-referenced markdown pages across sessions, stored under the user's Claude data directory. |
+| [observe](plugins/agent-skills/skills/observe/) | Context-builder. Reads git, `gh`/`az` forge metadata, and project docs to file structured contributor/workflow/review-policy pages into agent-wiki. |
+| [contribute](plugins/agent-skills/skills/contribute/) | Semi-autonomous contribution workflow. Picks work, plans, drafts a local branch + PR description, iterates on reviews. Hard safety rails; user opens the PR. |
 
 ## Repo Structure
 
@@ -50,10 +52,9 @@ agent-skills/                            # Marketplace root
 │       ├── .claude-plugin/
 │       │   └── plugin.json              # Plugin manifest
 │       └── skills/
-│           └── agent-wiki/
-│               ├── README.md            # Human-facing overview
-│               ├── SKILL.md             # Agent-facing instructions
-│               └── references/          # Supporting docs (loaded on-demand)
+│           ├── agent-wiki/              # Persistent knowledge base
+│           ├── observe/                 # Repo + team + workflow context-builder
+│           └── contribute/              # Semi-autonomous contribution workflow
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 └── LICENSE

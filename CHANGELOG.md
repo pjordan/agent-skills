@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-18
+
+### Added
+- **observe** skill: context-builder for a repo, its team, and its workflow. Reads git,
+  GitHub (`gh`) / Azure DevOps (`az`) forge metadata, `CLAUDE.md`, `CONTRIBUTING.md`,
+  `CODEOWNERS`, issue/PR templates, and ADRs; writes structured pages into agent-wiki using
+  four new page types: `contributor`, `workflow`, `review-policy`, `team-dynamics`.
+  Self-registers the new types in `<wiki-root>/SCHEMA.md` on first survey. Operations:
+  `survey` / `refresh` / `brief` / `investigate`. Refresh auto-triggers at >7 days or
+  >50 commits since last survey. Graceful degrade when forge CLIs are missing or
+  unauthenticated.
+- **contribute** skill: semi-autonomous contribution workflow. Reads observe's wiki pages
+  for repo context, then takes a task through `pick` (user-directed selection) → `plan`
+  (written approach, user confirms) → `draft` (local branch + commits + PR description in
+  `.git/PR_EDITMSG`; user opens the PR) → `iterate` (review comments + CI failures).
+  Uses the user's own git/`gh`/`az` identity — no bot account, no `Co-Authored-By`.
+  Safety rails: always-protected branches include `main`, `master`, `trunk`, `develop`,
+  `release/*`, `hotfix/*`; no autonomous PR creation; 300 lines / 8 files / 1 PR per run
+  with confirm gate; max 3 iterate rounds per PR; no unsolicited social actions (solicited
+  replies on the user's own active PR are fine).
+
 ## [1.1.0] - 2026-04-18
 
 ### Changed
