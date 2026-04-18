@@ -146,11 +146,19 @@ than 50 commits since the recorded `HEAD` at last refresh. Manual invocation alw
    reuse it across every page's staleness check. If a page is stale (by either threshold) or the
    user asked for a full refresh, re-run the relevant survey steps for that page's scope.
 
-3. Update pages in place — do not create duplicates. Preserve `created`; bump `last_updated` and
+3. Before recomputing a page's baseline, check for drift notes from `reflect`. Bound the scan:
+   read recent `retro-*.md` pages whose `related:` frontmatter names this page (use Grep for
+   `related:.*<page-name>` on `<wiki-root>/pages/retro-*.md`), and within those read the
+   `## Calibration findings` section. Treat findings that name this page as evidence the prior
+   has drifted — weight recomputation toward observed reality rather than stale averages.
+   [reflect § calibrate](../reflect/SKILL.md#calibrate--note-drift-from-observes-priors)
+   produces these findings; observe consumes them.
+
+4. Update pages in place — do not create duplicates. Preserve `created`; bump `last_updated` and
    `## Last refreshed`. If a contributor has dropped out of the active set, mark the page
    `## Status: inactive since <date>` rather than deleting it.
 
-4. Append a `refresh` entry to `log.md` summarizing what changed.
+5. Append a `refresh` entry to `log.md` summarizing what changed.
 
 ---
 

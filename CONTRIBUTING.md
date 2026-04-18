@@ -2,6 +2,28 @@
 
 Thanks for your interest in contributing to agent-skills. This project is a collection of skills that help coding agents work more effectively during long-running development sessions.
 
+## Before Proposing a New Skill — the Three Bars
+
+Adding a skill is a durable commitment: once users depend on its operations, renaming or
+restructuring is breaking. The triggering surface also isn't free — every extra skill's
+description competes for model attention, and a plugin with too many overlapping descriptions
+produces unreliable triggering. Realistic ceiling is roughly 5-7 skills per plugin.
+
+**Default answer to "should we add a skill?" is no.** A proposal must clear all three bars:
+
+1. **Disjoint triggering language.** The skill's natural trigger phrases do not overlap
+   meaningfully with any existing skill's description. If the user's request could fire two
+   skills, the triggering contract is already broken.
+2. **Multi-step procedure that benefits from a checklist.** A skill is for work that has
+   ceremony — preconditions, ordered steps, artifacts, rails. Single-shot transformations,
+   one-line conventions, or "just remember to do X" are not skill-shaped.
+3. **Awkward as any alternative.** A skill is the right shape only if it would be worse as
+   a settings.json hook (for automation), a subagent definition (for encapsulated reasoning),
+   a slash command, or a `CLAUDE.md` rule. State explicitly why the alternatives fall short.
+
+If the proposal doesn't clear all three, don't open the PR — file an issue describing the
+problem instead, or propose a smaller change to an existing skill.
+
 ## Adding a New Skill
 
 1. Create a directory under `plugins/agent-skills/skills/` with your skill name (kebab-case):

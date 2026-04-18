@@ -51,5 +51,5 @@ The user inspects the branch and runs the command themselves.
 - **User identity end-to-end.** User's git, gh, and az auth. No bot account, no `Co-Authored-By` trailer on commits, no autonomous publishing.
 - **Pre-commit hooks respected.** Never passes `--no-verify`. On hook failure, fix and commit anew — no amending across failures.
 - **Force-pushes opt-in.** Only when the user asks, and then with `--force-with-lease`.
-- **Reads observe's output, does not call observe.** Stale wiki data is surfaced to the user as a prerequisite, not silently refreshed.
+- **Reads observe's output, does not call observe.** Stale wiki data is surfaced to the user as a prerequisite, not silently refreshed. After a merged PR, ≥2 iterate rounds, or a tripped scope cap, contribute suggests the user run [reflect](../reflect/) `retro` — it never invokes reflect itself.
 - **Hard scope caps.** 300 lines / 8 files / 1 PR per run, with a pause-and-confirm gate before exceeding.

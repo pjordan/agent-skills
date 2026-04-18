@@ -121,6 +121,20 @@ Run after `pick` (or when the user points at a specific issue) and before any ed
 3. Show the plan to the user and wait for confirmation before moving to `draft`. Plans are cheap
    to revise; half-done drafts are not.
 
+4. **On confirmation,** persist the plan to `<wiki-root>/plans/<filename>.md` (see
+   [agent-wiki § Storage location](../agent-wiki/SKILL.md#storage-location) for `<wiki-root>`;
+   create the `plans/` directory if missing). If the user rejects the plan, do not persist —
+   revise and re-confirm first. The plan is wiki content, not repo content — it lives in the
+   wiki, **not** in `.git/`. Filename rules:
+   - With issue number: `<issue>-<slug>-<YYYYMMDD-HHMM>.md` (e.g. `482-auth-timeout-20260418-1430.md`).
+   - Without issue number: `<slug>-<YYYYMMDD-HHMM>.md`.
+   - `slug` is a short kebab-case description, 2-4 words.
+
+   Frontmatter: `title`, `issue` (nullable), `created`, optional `tags`. Body: the same plan
+   shown to the user (goal, files to change, tests, expected size, required CI checks,
+   conventions). Downstream skills — notably [reflect](../reflect/SKILL.md) — read this file
+   to compare plan against actual.
+
 ---
 
 ### draft — Implement the plan on a local branch
@@ -149,6 +163,10 @@ Run after the user approves a plan.
 6. Print the exact command for the user to open the PR themselves. **Do not run it.** Examples:
    - GitHub: `gh pr create --base <base> --head <branch> --title "<title>" --body-file .git/PR_EDITMSG`
    - Azure DevOps: `az repos pr create --source-branch <branch> --target-branch <base> --title "<title>" --description @.git/PR_EDITMSG`
+
+7. If the scope cap tripped (not just the soft-warn at step 4), suggest the user run
+   [`reflect retro`](../reflect/SKILL.md) after the PR wraps up so the drift is captured while
+   the context is fresh. Suggestion only — do not invoke reflect yourself.
 
 ---
 
@@ -185,6 +203,10 @@ previous push's CI has not completed — don't stack rounds on top of in-flight 
 
 5. Leave anything that needs a human call — disagreements with a reviewer, scope expansion,
    design pushback, intermittent CI — to the user. Surface it clearly and stop.
+
+6. If this is the second or later iterate round on the same PR, or the PR just merged after an
+   iterate sequence, suggest the user run [`reflect retro`](../reflect/SKILL.md) on the PR before
+   the context fades. Do not run reflect yourself.
 
 ---
 

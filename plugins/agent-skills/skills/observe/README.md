@@ -43,4 +43,4 @@ observe auto-detects the forge from `git remote -v`:
 - **CLAUDE.md is authoritative** — observe quotes it, never edits it; deviations are recorded as deviations.
 - **Graceful degradation** — missing `gh`/`az` auth produces a narrower page with a `## Limitations` section, not a failure.
 - **Writes only to agent-wiki** — the repo stays clean; the learned context is per-user and per-machine.
-- **Does not invoke other skills** — observe only reads the world and writes pages. Downstream skills read those pages; they do not call back into observe.
+- **Does not invoke other skills** — observe only reads the world and writes pages. Downstream skills read those pages; they do not call back into observe. The [reflect](../reflect/) skill feeds drift observations back in via `## Calibration findings` sections on retro pages, which observe consumes on the next `refresh`.

@@ -1,7 +1,7 @@
 {
   "name": "agent-skills",
-  "version": "1.2.0",
-  "description": "A collection of skills for coding agents during long-running autonomous development sessions. Includes agent-wiki (persistent knowledge base), observe (repo/team/workflow context-builder), and contribute (semi-autonomous contribution workflow).",
+  "version": "1.3.0",
+  "description": "A collection of skills for coding agents during long-running autonomous development sessions. Includes agent-wiki (persistent knowledge base), observe (repo/team/workflow context-builder), contribute (semi-autonomous contribution workflow), and reflect (after-action learning loop).",
   "author": {
     "name": "Patrick R. Jordan"
   },

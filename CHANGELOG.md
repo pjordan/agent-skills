@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-04-18
+
+### Added
+- **reflect** skill: after-action learning loop that writes `retro` and `playbook` pages
+  into agent-wiki. Closes the observe → contribute → reflect feedback cycle. See
+  `plugins/agent-skills/skills/reflect/` for operations and page-type definitions.
+- **CONTRIBUTING.md**: documented the "three bars" gate for proposing new skills.
+
+### Changed
+- **contribute**: `plan` now persists its output to `<wiki-root>/plans/` so reflect can
+  diff plan vs. actual later. `iterate` and `draft` suggest `reflect retro` when signals
+  warrant; contribute never invokes reflect directly.
+- **observe**: `refresh` now consumes `## Calibration findings` from reflect's retro
+  pages when recomputing baselines.
+
 ## [1.2.0] - 2026-04-18
 
 ### Added
