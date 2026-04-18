@@ -1,6 +1,6 @@
 {
   "name": "agent-skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A collection of skills for coding agents during long-running autonomous development sessions. Includes agent-wiki (persistent knowledge base), with more to come.",
   "author": {
     "name": "Patrick R. Jordan"

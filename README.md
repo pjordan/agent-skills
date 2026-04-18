@@ -1,7 +1,7 @@
 # agent-skills
 
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blueviolet?logo=anthropic)](https://code.claude.com/docs/en/skills)
-[![Version](https://img.shields.io/badge/version-1.0.0-green)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/pjordan/agent-skills)](https://github.com/pjordan/agent-skills/issues)
@@ -37,7 +37,7 @@ Or just ask naturally: "initialize the wiki", "ingest this finding", "lint the w
 
 | Skill | Description |
 |-------|-------------|
-| [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent, compounding knowledge base. Maintains a `.wiki/` directory of cross-referenced markdown pages across sessions. |
+| [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent, compounding knowledge base. Maintains a per-project wiki of cross-referenced markdown pages across sessions, stored under the user's Claude data directory. |
 
 ## Repo Structure
 

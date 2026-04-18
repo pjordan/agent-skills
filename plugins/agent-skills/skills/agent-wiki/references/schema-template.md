@@ -1,6 +1,6 @@
 # Schema Template
 
-Use this as the starting point for `.wiki/SCHEMA.md` when initializing a new wiki. Adapt to the project — add or remove page types as needed.
+Use this as the starting point for `<wiki-root>/SCHEMA.md` when initializing a new wiki. Adapt to the project — add or remove page types as needed.
 
 ---
 

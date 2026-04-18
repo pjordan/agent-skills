@@ -1,6 +1,6 @@
 # agent-wiki
 
-A persistent, compounding knowledge base that coding agents maintain during development sessions. Plain markdown files in a `.wiki/` directory that grow richer over time — so agents stop rediscovering the same things.
+A persistent, compounding knowledge base that coding agents maintain during development sessions. Plain markdown files in a per-project wiki directory (stored under the user's Claude data directory) that grow richer over time — so agents stop rediscovering the same things.
 
 ## Why
 
@@ -12,15 +12,17 @@ agent-wiki fixes this by giving agents a structured place to file discoveries an
 
 | Operation | What it does |
 |-----------|-------------|
-| **init** | Bootstrap `.wiki/` for a new repo — scans the codebase and creates foundational pages |
+| **init** | Bootstrap the wiki for a new repo — scans the codebase and creates foundational pages |
 | **ingest** | File a discovery — bug root causes, architecture insights, dependency quirks, failed approaches |
 | **query** | Consult the wiki for context before making decisions |
 | **lint** | Health check — find contradictions, stale pages, orphans, and gaps |
 
-## What the wiki looks like
+## Where the wiki lives
+
+Wikis live under `${CLAUDE_PLUGIN_DATA}/wikis/<project-key>/`, where `<project-key>` is the resolved project path with `/` replaced by `-`. `$CLAUDE_PLUGIN_DATA` is set by Claude Code and typically resolves under `~/.claude/plugins/data/...`. See [SKILL.md § Storage location](SKILL.md#storage-location) for the exact path-computation rules.
 
 ```
-.wiki/
+<wiki-root>/
 ├── SCHEMA.md                  # Page type definitions and conventions
 ├── index.md                   # Categorized catalog of all pages
 ├── log.md                     # Chronological activity log
@@ -33,6 +35,8 @@ agent-wiki fixes this by giving agents a structured place to file discoveries an
 
 Each page has YAML frontmatter (title, type, tags, related pages) and `[[wikilinks]]` connecting related topics into a navigable knowledge graph.
 
+**Scope**: the wiki is per-user and per-machine — it does not travel with `git clone`, does not sync across teammates, and is lost if the plugin is uninstalled. Think "personal cross-session notes for this checkout," not "team-shared documentation."
+
 ## How it works in practice
 
 **Session 1** — Agent initializes the wiki, scans the codebase, creates foundational pages about the project architecture, auth system, and database layer.
@@ -44,7 +48,7 @@ Each page has YAML frontmatter (title, type, tags, related pages) and `[[wikilin
 ## Design
 
 - **Plain markdown** — no databases, no embeddings, no special tooling. Works with any LLM agent.
-- **Persistent in repo** — commit it or gitignore it, your choice.
+- **Per-user, off-repo** — stored under `${CLAUDE_PLUGIN_DATA}` so the repo stays clean; keyed by resolved project path.
 - **Agent-first** — written for agents to read and maintain, though humans can browse it too.
 - **Compounding** — every session builds on prior knowledge through cross-references and incremental ingests.
 

@@ -16,7 +16,7 @@ Concrete examples of each operation for reference.
 
 **After scanning a Node.js/Express API, the agent creates:**
 
-`.wiki/pages/project-overview.md`:
+`<wiki-root>/pages/project-overview.md`:
 ```yaml
 ---
 title: Project Overview
@@ -38,7 +38,7 @@ Task management REST API built with Express and PostgreSQL.
 - **Endpoints**: CRUD for tasks with role-based access (admin, user, viewer)
 ```
 
-`.wiki/pages/auth-middleware.md`:
+`<wiki-root>/pages/auth-middleware.md`:
 ```yaml
 ---
 title: Auth Middleware
@@ -60,7 +60,7 @@ File: `src/auth/middleware.js`
 - `requireRole(...roles)` middleware for RBAC on specific routes
 ```
 
-`.wiki/index.md` (updated):
+`<wiki-root>/index.md` (updated):
 ```markdown
 # Wiki Index
 
@@ -70,7 +70,7 @@ File: `src/auth/middleware.js`
 - [Database Layer](pages/database-layer.md) — pg-pool configuration and query patterns | tags: database, postgresql
 ```
 
-`.wiki/log.md` (updated):
+`<wiki-root>/log.md` (updated):
 ```markdown
 # Wiki Log
 
@@ -86,7 +86,7 @@ Created: pages/project-overview.md, pages/auth-middleware.md, pages/database-lay
 
 **Agent creates/updates:**
 
-`.wiki/pages/flaky-ci-tests.md` (new — type: bug):
+`<wiki-root>/pages/flaky-ci-tests.md` (new — type: bug):
 ```yaml
 ---
 title: Flaky CI Tests — DB Pool Timeout
@@ -117,13 +117,13 @@ Locally postgres is already running so the timeout never triggers.
 See also: [[database-layer]], [[ci-postgres-timing]]
 ```
 
-`.wiki/pages/database-layer.md` (updated — added Known Issues section):
+`<wiki-root>/pages/database-layer.md` (updated — added Known Issues section):
 ```markdown
 ## Known Issues
 - CI flaky tests due to connection timeout — see [[flaky-ci-tests]]
 ```
 
-`.wiki/log.md` (appended):
+`<wiki-root>/log.md` (appended):
 ```markdown
 ## [2026-04-11] ingest | Flaky CI tests caused by DB pool timeout (5s vs 8-12s container startup)
 Created: pages/flaky-ci-tests.md, pages/ci-postgres-timing.md
@@ -137,7 +137,7 @@ Cross-refs: flaky-ci-tests <-> database-layer, flaky-ci-tests <-> ci-postgres-ti
 
 **Prompt:** "What do we know about the auth system?"
 
-**Agent reads** `.wiki/index.md`, finds auth-related pages, reads them, and synthesizes:
+**Agent reads** `<wiki-root>/index.md`, finds auth-related pages, reads them, and synthesizes:
 
 > The auth system uses JWT with 24h token expiry (`src/auth/middleware.js`). Tokens are
 > verified against `JWT_SECRET` which defaults to a hardcoded dev secret. Role-based access
