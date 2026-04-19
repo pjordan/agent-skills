@@ -20,20 +20,20 @@ Initialize the wiki and survey the repository:
 ```console
 > init the wiki for this project
 
-  Initializing wiki at $CLAUDE_PLUGIN_DATA/wikis/-Users-pat-git-acme-api/ ...
+  Initializing wiki at $CLAUDE_PLUGIN_DATA/wikis/-Users-pjordan-git-acme-api/ ...
   Created SCHEMA.md, index.md, log.md
   Wiki ready — 0 pages.
 
 > observe survey
 
-  Detecting forge ... github.com (gh authenticated as @pat)
+  Detecting forge ... github.com (gh authenticated as @pjordan)
   Scanning git history (1,247 commits, 14 contributors) ...
   Reading CLAUDE.md, CONTRIBUTING.md, CODEOWNERS ...
   Querying gh: PRs, reviews, branch protection, workflows ...
   Writing pages:
     pages/contributor-alice-chen.md      47 commits in src/auth/, src/payments/
     pages/contributor-bob-kumar.md       63 commits in src/api/, src/models/
-    pages/contributor-pat.md             19 commits in src/cli/, tests/
+    pages/contributor-pjordan.md             19 commits in src/cli/, tests/
     pages/workflow-ci.md                 3 required checks, branch protection on main
     pages/review-policy-main.md          1 approval required, CODEOWNERS active
     pages/team-dynamics.md               median cycle time 1.4d, 82 PRs in 90d
@@ -63,7 +63,7 @@ The wiki now contains structured, quantitative data about the repository — own
   Acceptance criteria:
     - [ ] Race condition in concurrent refresh no longer reproduces
     - [ ] Regression test covers the concurrent-refresh path
-  Branch: pat/214-fix-token-refresh-race
+  Branch: pjordan/214-fix-token-refresh-race
 
   Drafting ...
     src/auth/middleware.ts               +32 -8
@@ -79,7 +79,7 @@ The wiki now contains structured, quantitative data about the repository — own
 The user opens the PR themselves — contribute never opens PRs autonomously:
 
 ```console
-~/git/acme-api (pat/214-fix-token-refresh-race) $ gh pr create --body-file .git/PR_EDITMSG
+~/git/acme-api (pjordan/214-fix-token-refresh-race) $ gh pr create --body-file .git/PR_EDITMSG
  ✓ Created pull request #221
 ```
 
@@ -126,7 +126,7 @@ The retro captures what went well, what drifted, and what the wiki got wrong. Th
   Refreshing forge metadata (HEAD:f91b3c0, +3 commits since last survey) ...
   Updated pages:
     pages/workflow-ci.md                 +lint --fix guidance, commit count 1250
-    pages/contributor-pat.md             +2 merged PRs, updated ownership areas
+    pages/contributor-pjordan.md             +2 merged PRs, updated ownership areas
   calibration-queue.md drained — 0 entries remaining.
   Refresh complete — 2 pages updated.
 
@@ -134,7 +134,7 @@ The retro captures what went well, what drifted, and what the wiki got wrong. Th
 
   Reading wiki (calibration queue empty) ...
   Candidates:
-    #198  Flaky test in test_oauth_callback    (auth, test) — pat now has ownership signal
+    #198  Flaky test in test_oauth_callback    (auth, test) — pjordan now has ownership signal
     #227  Deprecation warning on Node 22       (infra, chore)
     #201  Add rate-limit headers               (auth, enhancement)
   Retro for #221 noted lint-on-save prevents CI churn — factoring that in.
