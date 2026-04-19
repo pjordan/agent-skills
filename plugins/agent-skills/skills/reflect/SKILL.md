@@ -90,19 +90,18 @@ related: [contributor-alice, workflow-ci, playbook-flaky-e2e]
 - `## Acceptance criteria — outcome` — one checklist item per criterion from the plan file's
   acceptance-criteria section (any header variant contribute emits — see
   [contribute § plan step 5](../contribute/SKILL.md#plan--outline-the-approach-before-coding)).
-  Grade each: `- [x] <criterion>` for Met, `- [ ] <criterion>` for Unmet, `- [?] <criterion>`
-  for Unverifiable. Every grade ends with a parseable evidence citation of shape
-  `<prefix>:<payload>`, with `prefix` drawn from a closed set:
-  - `sha:<short-sha>` — commit or merge-commit evidence
-  - `pr:<forge-url>` — PR-level evidence (review thread, CI check URL)
-  - `test:<test-id-or-path>` — test output: name, file, or CI test ID
-  - `reason:<why>` — only for `[?]` Unverifiable (e.g. `reason:requires user report`)
+  Grade based on the criterion's type tag. Every grade ends with an evidence citation:
 
-  If **more than half** of the criteria grade Unverifiable, add a short note at the top of this
-  section calling that out — a mostly-`[?]` outcome usually means the criteria were too
-  aspirational or the work drifted from them. If the plan file has no acceptance-criteria
-  section at all (e.g. plans predating this convention), skip this section with a one-line
-  note: `_No plan-level criteria to grade._`
+  | Type tag | Grade | Evidence format |
+  |----------|-------|-----------------|
+  | `[objective]` | `[x]` Met or `[ ]` Unmet | `sha:<short-sha>`, `pr:<url>`, or `test:<path>` |
+  | `[proxy]` | `[x]` if metric improved in stated direction, `[ ]` if not | `delta:<before>→<after>` (e.g. `delta:steps 7→4`). Note: a proxy Met does not guarantee the subjective intent was achieved. |
+  | `[subjective]` | `[?]` always — agent cannot verify | `human:<what-to-review>`. Describe what was implemented; flag for human review. Do not grade Met based on the agent's own judgment. |
+  | untagged | `[x]` Met, `[ ]` Unmet, or `[?]` Unverifiable | `reason:<why>` for `[?]`. Legacy fallback for plans predating type tags. |
+
+  If more than half of `[objective]` criteria grade Unmet, add a short note — that signals
+  real drift. If most `[subjective]` criteria grade `[?]`, that is expected. If the plan file
+  has no acceptance-criteria section, skip with: `_No plan-level criteria to grade._`
 - `## Plan vs actual` — planned N lines / X files vs. actual M lines / Y files; iterate rounds;
   CI outcomes (pass/fail/flake). Quote the plan file's expected size verbatim.
 - `## What went well` — concrete wins with SHA/PR links.

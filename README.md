@@ -49,7 +49,7 @@ The feedback loop runs in three phases across one or more sessions.
 > observe this repo
 ```
 
-**2. Ship a contribution** -- Ask Claude to pick work. It consults the wiki before planning, drafts a branch with commits and a PR description, and hands the user the command to open the PR.
+**2. Ship a contribution** -- Ask Claude to pick work. It consults the wiki before planning, generates type-tagged acceptance criteria (objective for testable outcomes, proxy for measurable deltas, subjective for human judgment), drafts a branch, and hands the user the command to open the PR.
 
 ```
 > pick something to work on in the auth layer
@@ -70,8 +70,8 @@ On the next `contribute`, the agent detects unconsumed calibration findings, ref
 |-------|-------------|
 | [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent knowledge base. Maintains a per-project wiki of cross-referenced Markdown pages stored under `$CLAUDE_PLUGIN_DATA`. Data persists across sessions. |
 | [observe](plugins/agent-skills/skills/observe/) | Repository context builder. Reads git history, forge metadata (GitHub via `gh`, Azure DevOps via `az`), and project documentation. Writes structured contributor, workflow, and review-policy pages into the wiki. Operates in read-only mode; the codebase is never modified. |
-| [contribute](plugins/agent-skills/skills/contribute/) | Contribution workflow manager. Selects work items, generates plans, drafts local branches and PR descriptions, and iterates on review feedback. Scope-capped at 300 lines, 8 files, and 1 PR per invocation. Does not push to protected branches or open PRs autonomously; the user retains that control. |
-| [reflect](plugins/agent-skills/skills/reflect/) | Post-merge learning loop. Compares plan artifacts against actual commits, reviews, and CI outcomes. Produces retro and playbook pages so that lessons compound across sessions. Appends calibration findings to a queue that observe drains automatically. Suggests retrospectives after merges but requires user confirmation before proceeding. |
+| [contribute](plugins/agent-skills/skills/contribute/) | Contribution workflow manager. Selects work items, generates plans with type-tagged acceptance criteria (`[objective]` for tool-verifiable, `[proxy]` for measurable deltas, `[subjective]` for human judgment), drafts local branches and PR descriptions, and iterates on review feedback. Scope-capped at 300 lines, 8 files, and 1 PR per invocation. Does not push to protected branches or open PRs autonomously; the user retains that control. |
+| [reflect](plugins/agent-skills/skills/reflect/) | Post-merge learning loop. Compares plan artifacts against actual commits, reviews, and CI outcomes — grading objective criteria by tool evidence, proxy criteria by before/after delta, and subjective criteria as requiring human review. Produces retro and playbook pages so that lessons compound across sessions. Appends calibration findings to a queue that observe drains automatically. |
 
 ## Sample Wiki Output
 

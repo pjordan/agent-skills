@@ -122,19 +122,45 @@ Run after `pick` (or when the user points at a specific issue) and before any ed
    to anticipate, and any conventions from `CLAUDE.md` / CONTRIBUTING that apply.
 
 3. Extract acceptance criteria from the issue. Using the issue body already fetched in step 1,
-   propose a checkable list — each criterion short,
-   verifiable, and unambiguous (e.g. `crash in src/auth/middleware.js no longer reproduces on
-   invalid tokens`, `regression test added for cold-start path`, `README section on JWT_SECRET
-   updated`). Aim for 3-6 items per task; criteria that can't be observed from git, CI, or a
-   test output (only via user report or external system) should be few. Prefer under-claiming
-   to over-claiming: fewer, sharper criteria beat a padded list that will grade mostly
-   "Unverifiable" later.
+   propose a checkable list — each criterion short and unambiguous. Aim for 3-6 items per task.
+
+   **Classify each criterion by type** using a trailing tag:
+   - `[objective: test|ci|lint]` — verifiable by running a tool. Use for behavior changes,
+     regressions, test coverage, and build-system checks. These are the strongest criteria.
+   - `[proxy: <metric>]` — a measurable before/after delta that approximates a subjective goal
+     but is not the goal itself. Use when the issue asks for something qualitative ("simpler,"
+     "faster," "cleaner") and you can identify a structural metric (step count, field count,
+     cyclomatic complexity, file length, p95 latency). Encode the before value and target
+     directly in the criterion text using the format `<metric> <before>→<target>` so reflect
+     can parse and grade unambiguously (e.g. "steps 7→≤4"). Never present a proxy as the goal.
+   - `[subjective: <domain>]` — requires human judgment to evaluate (UX feel, design quality,
+     copy tone, architectural elegance). Use when no tool or proxy can meaningfully assess the
+     outcome. The agent proposes options or implements a best-effort change; the user decides
+     whether it succeeded.
+
+   Every criterion must have exactly one type tag. Do not mix tagged and untagged criteria
+   in the same plan — untagged criteria degrade reflect's grading fidelity.
+
+   Example for a UX task ("improve the onboarding flow"):
+   ```
+   - [ ] Onboarding steps 7→≤4 [proxy: step-count]
+   - [ ] Required form fields 12→≤6 [proxy: field-count]
+   - [ ] Inline validation replaces post-submit error page [objective: test]
+   - [ ] Onboarding flow feels simpler to a new user [subjective: ux]
+   ```
+
+   Example for a deterministic task ("fix token refresh race"):
+   ```
+   - [ ] Race condition no longer reproduces on concurrent refresh [objective: test]
+   - [ ] Regression test covers the concurrent-refresh path [objective: test]
+   ```
 
    **Ground each criterion in the issue.** Under the proposed list, include the short issue
    span each criterion came from (e.g. `> "the crash only happens on expired tokens"`). If you
-   can't find a quote supporting a criterion, drop the criterion — don't fabricate. If the issue
-   has no explicit criteria at all, still infer from prose but mark the list as inferred (see
-   step 5 on how the section header encodes that).
+   can't find a quote supporting a criterion, drop it — don't fabricate. For `[subjective]`
+   criteria, the grounding may be the overall issue intent rather than a specific quote; note
+   this. If the issue has no explicit criteria at all, still infer from prose but mark the list
+   as inferred (see step 5 on how the section header encodes that).
 
 4. Show the plan *and* the acceptance criteria to the user in a single combined gate. Wait for
    confirmation. The user can edit either — any edit to either restarts this same gate (plan
