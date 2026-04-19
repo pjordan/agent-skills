@@ -81,6 +81,12 @@ related: [contributor-alice, workflow-ci, playbook-flaky-e2e]
 
 **`retro` body structure:**
 - `## Context` — the task, PR number, issue number, scope of the retro.
+- `## Timeline` — **include when the retro covers an incident, outage, or any event with a
+  temporal sequence worth reconstructing.** A table with columns `Time | Event | Source` (use
+  UTC or the team's timezone). Reconstruct from git timestamps, CI run start/end times, forge
+  comments, deploy logs, and user-supplied details. If exact times are unavailable, use
+  relative ordering (`T+0`, `T+5m`, etc.) and note the approximation. Skip this section for
+  routine PR retros where the commit log already tells the story.
 - `## Acceptance criteria — outcome` — one checklist item per criterion from the plan file's
   acceptance-criteria section (any header variant contribute emits — see
   [contribute § plan step 5](../contribute/SKILL.md#plan--outline-the-approach-before-coding)).

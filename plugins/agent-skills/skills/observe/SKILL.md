@@ -201,8 +201,12 @@ reviewed".
 **Public data only.** Git and forge metadata that any contributor can already see. No
 communication-style or personality profiling — files owned and review latency, not tone.
 
-**CLAUDE.md is authoritative.** When observe content and `CLAUDE.md` disagree, quote `CLAUDE.md`
-and mark the observed behavior as a deviation. Never edit `CLAUDE.md`.
+**CLAUDE.md is authoritative.** When observed practice diverges from `CLAUDE.md` guidance, quote
+`CLAUDE.md` verbatim and document both the stated policy and the observed configuration in a
+`## CLAUDE.md compliance` section on the relevant page. For example, if CLAUDE.md says "all PRs
+require two approvals" but the repo's branch protection only requires one, record both values.
+This prevents downstream skills from enforcing rules the repo does not actually follow.
+Never edit `CLAUDE.md`.
 
 **Degrade, don't fail.** If `gh` or `az` is missing or unauthenticated, emit what git alone can
 tell you and list the blocked command under `## Limitations` on each affected page.
@@ -212,3 +216,9 @@ never shadow an old page with a near-duplicate new one.
 
 **Do not act.** You read, you summarize, you file. Code changes, PRs, and comments belong to
 contribute or the user.
+
+**Quantify, don't narrate.** Prefer concrete metrics over qualitative summaries. Instead of
+"Alice is active in the auth module," write "Alice: 47 commits in `src/auth/` (68% of path),
+median review latency 3.2h (n=12 PRs)." Instead of "the team reviews PRs quickly," write
+"median PR cycle time: 18h (p90: 42h, n=31 merged PRs in 90d)." Downstream skills make
+decisions based on these numbers — vague characterizations force them to guess.

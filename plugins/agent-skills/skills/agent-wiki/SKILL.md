@@ -137,6 +137,10 @@ Run periodically (start of session, or when asked) to keep the wiki healthy.
 **Check for:**
 - **Contradictions**: Page A says X, page B says not-X
 - **Stale pages**: `last_updated` is old and content may not reflect current code
+- **Stale references**: Paths, module names, or API signatures that no longer match the codebase.
+  When correcting, distinguish between references that should be updated (descriptive/navigational)
+  and references that are intentionally historical (decision records, migration notes, changelogs).
+  Preserve intentional historical references and annotate them if ambiguous.
 - **Orphan pages**: No inbound `[[wikilinks]]` from other pages
 - **Missing pages**: `[[wikilinks]]` pointing to nonexistent pages
 - **Gaps**: Important concepts or components that should have pages but don't
