@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-1.4.0-green)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Coding agents forget everything between sessions — and when they don't, they act on stale assumptions with unwarranted confidence. **agent-skills** is a closed-loop learning system that observes a repository, plans contributions with type-tagged acceptance criteria, grades outcomes against predictions, and calibrates its own priors when they prove wrong. Each session leaves the knowledge base more accurate than it found it. Installable as a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin.
+**agent-skills** is a closed-loop learning system that observes a repository, plans contributions with type-tagged acceptance criteria, grades outcomes against predictions, and calibrates its own priors when they prove wrong. Each session leaves the knowledge base more accurate than it found it. Installable as a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin.
 
 ## Motivation
 
