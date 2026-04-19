@@ -26,7 +26,8 @@ ownership, and gates. You do **not** invoke observe. Before any operation, check
 - If `<wiki-root>` does not exist or contains no pages with `type: contributor` / `workflow` /
   `review-policy` / `team-dynamics`, stop and tell the user to run `observe survey` first.
 - If those pages exist but are stale (any relevant page's `## Last refreshed` is older than the
-  thresholds observe documents, or the page marks itself stale), stop and tell the user to run
+  thresholds observe documents, or the page marks itself stale), or if
+  `<wiki-root>/calibration-queue.md` exists and is non-empty, stop and tell the user to run
   `observe refresh` first.
 
 Do not fall back to raw forge queries to substitute for missing observe data — the wiki is the

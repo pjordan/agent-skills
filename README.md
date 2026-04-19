@@ -43,11 +43,9 @@ flowchart LR
     class observe,contribute,reflect skill;
 ```
 
-The dashed arrow represents the feedback mechanism: when reflect identifies assumptions that proved incorrect, those calibration findings inform observe during its next refresh, allowing the wiki's baselines to improve over time.
+The dashed arrow represents the feedback mechanism: when reflect identifies assumptions that proved incorrect, it appends calibration findings to a queue file. Observe drains this queue during its next refresh, and contribute gates on an empty queue before proceeding -- so stale baselines are corrected before they influence new work.
 
 ## Installation
-
-Add the marketplace source and install the plugin from within Claude Code:
 
 ```
 /plugin marketplace add pjordan/agent-skills
@@ -55,17 +53,30 @@ Add the marketplace source and install the plugin from within Claude Code:
 /reload-plugins
 ```
 
-All four skills become available immediately upon reload.
+## Getting Started
 
-## Usage
+The feedback loop runs in three phases across one or more sessions.
 
-Once installed, Claude invokes skills automatically when they are relevant to the current task. Skills may also be triggered explicitly:
+**1. Build context** -- Ask Claude to observe the repository. It reads git history and forge metadata, then writes structured wiki pages covering contributors, workflows, review policies, and team dynamics.
 
 ```
-/agent-skills:agent-wiki init the wiki for this project
+> observe this repo
 ```
 
-Natural-language invocations are also supported -- for example, "initialize the wiki," "ingest this finding," or "lint the wiki."
+**2. Ship a contribution** -- Ask Claude to pick work. It consults the wiki before planning, drafts a branch with commits and a PR description, and hands the user the command to open the PR.
+
+```
+> pick something to work on in the auth layer
+> go with #214
+```
+
+**3. Learn from the outcome** -- After the PR merges, ask Claude to reflect. It compares plan against actual, grades acceptance criteria, and feeds calibration findings back into the wiki for the next session.
+
+```
+> reflect on PR #221
+```
+
+On the next `contribute`, the agent detects unconsumed calibration findings, refreshes the affected baselines, and picks work with corrected data. For a full annotated terminal session showing all four phases, see [docs/walkthrough.md](docs/walkthrough.md).
 
 ## Skills
 
@@ -74,25 +85,15 @@ Natural-language invocations are also supported -- for example, "initialize the 
 | [agent-wiki](plugins/agent-skills/skills/agent-wiki/) | Persistent knowledge base. Maintains a per-project wiki of cross-referenced Markdown pages stored under `$CLAUDE_PLUGIN_DATA`. Data persists across sessions. |
 | [observe](plugins/agent-skills/skills/observe/) | Repository context builder. Reads git history, forge metadata (GitHub via `gh`, Azure DevOps via `az`), and project documentation. Writes structured contributor, workflow, and review-policy pages into the wiki. Operates in read-only mode; the codebase is never modified. |
 | [contribute](plugins/agent-skills/skills/contribute/) | Contribution workflow manager. Selects work items, generates plans, drafts local branches and PR descriptions, and iterates on review feedback. Scope-capped at 300 lines, 8 files, and 1 PR per invocation. Does not push to protected branches or open PRs autonomously; the user retains that control. |
-| [reflect](plugins/agent-skills/skills/reflect/) | Post-merge learning loop. Compares plan artifacts against actual commits, reviews, and CI outcomes. Produces retro and playbook pages so that lessons compound across sessions. Suggests retrospectives after merges but requires user confirmation before proceeding. |
+| [reflect](plugins/agent-skills/skills/reflect/) | Post-merge learning loop. Compares plan artifacts against actual commits, reviews, and CI outcomes. Produces retro and playbook pages so that lessons compound across sessions. Appends calibration findings to a queue that observe drains automatically. Suggests retrospectives after merges but requires user confirmation before proceeding. |
 
 ## Sample Wiki Output
 
-After executing observe on a repository, the wiki contains pages such as the following:
-
-```
-pages/
-  contributor-alice.md      # Ownership areas, review latency, review volume
-  workflow-ci.md            # CI checks, branch protection rules, release cadence
-  review-policy.md          # Approval requirements, CODEOWNERS mapping
-  team-dynamics.md          # Review network, PR cycle time, collaboration patterns
-```
-
-A contributor page contains quantitative data drawn from git and forge metadata:
+After executing observe on a repository, the wiki contains pages such as:
 
 ```markdown
 ---
-title: Contributor — Alice Chen
+title: Contributor -- Alice Chen
 type: contributor
 tags: [contributor, auth, payments]
 related: [review-policy-main, team-dynamics]
@@ -107,15 +108,6 @@ related: [review-policy-main, team-dynamics]
 ## Review activity
 - Median review latency: 3.2h (n=12 PRs)
 - Reviews given (90d): 28
-- Most-reviewed authors: Bob (9), Carol (7)
-
-## Sources
-- `git log --author="Alice Chen" --since="90 days ago" --name-only`
-- `git blame` aggregated by path
-- `gh pr list --state merged --json reviews`
-
-## Last refreshed
-2026-04-18 | HEAD: a1b2c3d | Commit count: 847
 ```
 
 Each page uses YAML frontmatter and `[[wikilinks]]` for cross-referencing, with evidence citations linking to git SHAs and PR URLs. The wiki resides at `$CLAUDE_PLUGIN_DATA/wikis/<project-key>/`, outside the repository working tree.

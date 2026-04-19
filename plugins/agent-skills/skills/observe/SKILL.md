@@ -136,8 +136,10 @@ Run when no observe pages exist in the wiki, or when the user says "survey this 
 
 ### refresh — Re-run against latest state
 
-Auto-trigger when any observe page has `last_refreshed > 7 days ago` **or** the repo has more
-than 50 commits since the recorded `HEAD` at last refresh. Manual invocation always works.
+Auto-trigger when any observe page has `last_refreshed > 7 days ago`, **or** the repo has more
+than 50 commits since the recorded `HEAD` at last refresh, **or** `<wiki-root>/calibration-queue.md`
+exists and is non-empty (unconsumed calibration findings from reflect). Manual invocation always
+works.
 
 1. Read existing observe pages once. Collect their `last_refreshed` dates and SHAs into a single
    in-memory map; do not re-read per check.
@@ -146,13 +148,15 @@ than 50 commits since the recorded `HEAD` at last refresh. Manual invocation alw
    reuse it across every page's staleness check. If a page is stale (by either threshold) or the
    user asked for a full refresh, re-run the relevant survey steps for that page's scope.
 
-3. Before recomputing a page's baseline, check for drift notes from `reflect`. Bound the scan:
-   read recent `retro-*.md` pages whose `related:` frontmatter names this page (use Grep for
-   `related:.*<page-name>` on `<wiki-root>/pages/retro-*.md`), and within those read the
-   `## Calibration findings` section. Treat findings that name this page as evidence the prior
-   has drifted — weight recomputation toward observed reality rather than stale averages.
+3. Before recomputing a page's baseline, **read `<wiki-root>/calibration-queue.md`** if it
+   exists. Match each entry to the page being refreshed by `<page-name>`, and treat matching
+   findings as evidence the prior has drifted — weight recomputation toward observed reality
+   rather than stale averages. After processing, use Edit to remove the matched entries from
+   the queue file (leave entries for pages not being refreshed in this session — they will be
+   consumed on a future refresh of those pages). If the queue file is empty after removing
+   processed entries, delete it.
    [reflect § calibrate](../reflect/SKILL.md#calibrate--note-drift-from-observes-priors)
-   produces these findings; observe consumes them.
+   produces these queue entries; observe consumes them.
 
 4. Update pages in place — do not create duplicates. Preserve `created`; bump `last_updated` and
    `## Last refreshed`. If a contributor has dropped out of the active set, mark the page

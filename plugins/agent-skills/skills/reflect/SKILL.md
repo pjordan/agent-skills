@@ -184,9 +184,17 @@ checks, review-policy approval counts.
 2. Write the observation into the current retro page's `## Calibration findings` section with
    concrete evidence: commit SHA, PR URL, timestamps. One bullet per baseline.
 
-3. **Never modify observe's pages.** If the drift looks durable (not a one-off), suggest the
-   user run `observe refresh` — reflect does not invoke other skills. The disjoint-write rule
-   is a hard rail: two skills writing the same pages is the failure mode this avoids.
+3. **Append each finding to `<wiki-root>/calibration-queue.md`** so observe can discover drift
+   without grepping retro pages. One line per finding, format:
+   ```
+   - **<page-name>** | <prior-value> → <observed-value> | [[retro-<slug>]] | <date>
+   ```
+   Create the file if it does not exist. Append-only — never edit or delete existing entries;
+   observe drains the queue during refresh.
+
+4. **Never modify observe's pages.** If the drift looks durable (not a one-off), note it in the
+   queue entry. Reflect does not invoke other skills. The disjoint-write rule is a hard rail:
+   two skills writing the same pages is the failure mode this avoids.
 
 ---
 

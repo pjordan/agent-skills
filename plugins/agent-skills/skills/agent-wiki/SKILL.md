@@ -168,9 +168,10 @@ Fix what you can, flag what you can't as open questions on the relevant pages.
 
 ```
 <wiki-root>/
-├── SCHEMA.md          # Conventions and page type definitions
-├── index.md           # Categorized catalog of all pages
-├── log.md             # Append-only chronological activity log
+├── SCHEMA.md              # Conventions and page type definitions
+├── index.md               # Categorized catalog of all pages
+├── log.md                 # Append-only chronological activity log
+├── calibration-queue.md   # Pending calibration findings (reflect appends, observe drains)
 └── pages/
     ├── project-overview.md
     ├── auth-middleware.md
