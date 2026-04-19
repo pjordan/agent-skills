@@ -25,25 +25,11 @@ The four skills do not invoke one another directly. They coordinate through wiki
 
 ```mermaid
 flowchart LR
-    subgraph wiki["agent-wiki (persistent, per-project)"]
-        P1[contributor / workflow /<br/>review-policy / team-dynamics]
-        P2[plans/]
-        P3[retro / playbook]
-    end
-
-    observe -- writes --> P1
-    P1 --> contribute
-    contribute -- writes --> P2
-    P2 --> reflect
-    P1 --> reflect
-    reflect -- writes --> P3
-    P3 -. calibration findings .-> observe
-
-    classDef skill fill:#eef,stroke:#446,stroke-width:1px;
-    class observe,contribute,reflect skill;
+    observe -->|wiki| contribute -->|wiki| reflect
+    reflect -.->|calibration queue| observe
 ```
 
-The dashed arrow represents the feedback mechanism: when reflect identifies assumptions that proved incorrect, it appends calibration findings to a queue file. Observe drains this queue during its next refresh, and contribute gates on an empty queue before proceeding -- so stale baselines are corrected before they influence new work.
+Each skill reads from and writes to a shared, persistent wiki (agent-wiki). The dashed arrow closes the feedback loop: when reflect finds assumptions that proved incorrect, it queues calibration findings that observe incorporates on its next refresh. Contribute gates on an empty queue, so stale baselines are corrected before they influence new work.
 
 ## Installation
 
